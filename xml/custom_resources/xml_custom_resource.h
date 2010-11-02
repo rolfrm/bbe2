@@ -11,7 +11,6 @@
 
 #include "../xml_resource.h"
 #include <stack>
-#include <tuple>
 #include <string>
 #include <map>
 using namespace std;

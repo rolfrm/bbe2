@@ -3,8 +3,7 @@
 #include "toolModule.h"
 #include <string>
 #include <list>
-#include <tuple>
-#include "threaded.h"
+	#include "threaded.h"
 class point_cloud;
 class sp_object;
 class evented;
@@ -30,9 +29,7 @@ public:
 				sprite * get_closest_pickupable(int x, int y);
 				void remove_entity(sprite *sp);
 
-
 				sprite * getFirstSprite(std::string id);
-				std::tuple<sprite * > getSprites(std::string id);
 
 				void run();
 				std::list <sprite *> sprite_list;

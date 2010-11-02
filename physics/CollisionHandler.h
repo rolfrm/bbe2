@@ -39,6 +39,6 @@ private:
 	std::vector<SATData> CCD;
 	std::vector<SATData> collisionData;
 	std::vector<SATData> ActiveCollisionList;
-	std::vector<std::vector<SATData>> collisionGroups;
+	std::vector<std::vector<SATData> > collisionGroups;
 	std::vector<compositePhysobj *> CollisionObjects;
 };
