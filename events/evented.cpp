@@ -1,12 +1,12 @@
 #include "evented.h"
 #include <iostream>
-#include "../core.h"
-#include "../toolModule.h"
+#include "../utils/toolModule.h"
 #include "event_core.h"
 #include "../sound/sound_core.h"
-#include "../globals.h"
-#include "../hash.h"
+#include "../utils/hash.h"
 using namespace events;
+using namespace std;
+using namespace utils;
 evented::evented(string id) {
 	set_id(id);
 	Parent = NULL;
@@ -14,14 +14,14 @@ evented::evented(string id) {
 }
 
 void evented::sendEvent(event * evt) {
-	event_core->send_event(evt);
+	events::core->send_event(evt);
 }
 #include <boost/any.hpp>
 
 void evented::sendCustomEvent(std::string reciever, std::string str_data,
 		boost::any data, event_recv_type rtype) {
 	customEvent * evt = new customEvent(str_data, rtype, reciever, data);
-	event_core->send_event(evt);
+	events::core->send_event(evt);
 }
 
 void evented::sendEventUp(event * evt) {
@@ -67,7 +67,7 @@ bool evented::has_group(std::string group_name) {
 	return false;
 }
 
-bool evented::has_group(hashValue group_name) {
+bool evented::has_group(utils::hashValue group_name) {
 	return group_hashes[group_name.getInt()];
 }
 

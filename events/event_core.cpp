@@ -1,8 +1,6 @@
 #include "event_core.h"
-#include <GL/glfw.h>
 #include <iostream>
 #include <list>
-#include "../globals.h"
 using namespace events;
 //#include "../graphics/graphics_core.h"
 /*
@@ -84,9 +82,9 @@ void eventCore::add_unit(eventMaster *evt) {
 }
 
 void eventCore::take_event(event * evt) {
-	//take_event_lock.lock();
+	take_event_lock.lock();
 	event_queue.push(evt);
-	//take_event_lock.unlock();
+	take_event_lock.unlock();
 }
 void eventCore::send_event(event * evt) {
 
@@ -144,4 +142,9 @@ void eventCore::send_events(){
 		event_queue.pop();
 		delete evt;
 	}
+}
+
+events::eventCore * events::core;
+void events::init(){
+	core = new eventCore;
 }

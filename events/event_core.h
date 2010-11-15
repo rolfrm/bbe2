@@ -3,14 +3,15 @@
 #include "evented.h"
 #include <list>
 #include <queue>
-//#include "../threaded.h"
+#include "../utils/threaded.h"
 //#include "../toolModule.h"
 namespace events {
 
 class evented;
 class event;
 class eventMaster;
-class eventCore//:public threaded
+
+class eventCore:public utils::threaded
 {
 
 public:
@@ -24,11 +25,15 @@ public:
 	eventMaster * get_evented(std::string name); //first occurence
 	void send_events();
 
+
 private:
 	std::list<eventMaster *> evented_list;
 	std::queue<event *> event_queue;
-	//boost::mutex take_event_lock;
+	boost::mutex take_event_lock;
 };
+extern eventCore * core;
+
+void init();
 
 }
 #endif // EVENT_CORE_H

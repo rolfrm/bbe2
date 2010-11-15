@@ -8,7 +8,7 @@
 #ifndef EVENTS_H_
 #define EVENTS_H_
 
-#include "../hash.h"
+#include "../utils/hash.h"
 #include <string>
 #include <boost/any.hpp>
 namespace events{
@@ -60,15 +60,14 @@ enum event_type {
 	CLICKED
 };
 
-using std::string;
 class evented;
 class event {
 public:
-	event(enum event_recv_type recv_type, string reciever_id,
-			enum event_type type, string transmitter_id);
+	event(enum event_recv_type recv_type, std::string reciever_id,
+			enum event_type type, std::string transmitter_id);
 	event();
 	enum event_recv_type recv_type;
-	hashValue reciever_id;
+	utils::hashValue reciever_id;
 	enum event_type type;
 	evented * transmitter_id;
 	virtual event * clone() = 0;
@@ -82,7 +81,7 @@ public:
 
 class keyEvent: public event {
 public:
-	keyEvent(int button, event_type state, event_recv_type rtype, string group);
+	keyEvent(int button, event_type state, event_recv_type rtype, std::string group);
 	event * clone() {
 		return new keyEvent(*this);
 	}
@@ -94,10 +93,10 @@ public:
 class mouseEvent: public event {
 public:
 	mouseEvent(int button, event_type state, event_recv_type rtype,
-			string group) {
+			std::string group) {
 		this->button = button;
 		this->state = state;
-		this->reciever_id = hash32(group);
+		this->reciever_id = utils::hash32(group);
 		recv_type = rtype;
 		type = MOUSE;
 	}
@@ -110,11 +109,11 @@ public:
 
 class customEvent: public event {
 public:
-	customEvent(std::string custom_data, event_recv_type rtype, string receiver, boost::any anything = 0) {
+	customEvent(std::string custom_data, event_recv_type rtype, std::string receiver, boost::any anything = 0) {
 		type = CUSTOM;
 		recv_type = rtype;
-		reciever_id = hash32(receiver);
-		this->custom_data = hash32(custom_data);
+		reciever_id = utils::hash32(receiver);
+		this->custom_data = utils::hash32(custom_data);
 		data = anything;
 	}
 	/*
@@ -130,7 +129,7 @@ public:
 	event * clone() {
 		return new customEvent(*this);
 	}
-	hashValue custom_data;
+	utils::hashValue custom_data;
 	boost::any data;
 };
 
