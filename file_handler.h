@@ -11,7 +11,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-
+namespace utils{
 class filehandler{
 public:
 	filehandler(void);
@@ -28,5 +28,5 @@ private:
 	std::fstream filestream;
 	std::string filename;
 };
-
+}
 #endif /* FILE_HANDLER_H_ */

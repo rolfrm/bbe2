@@ -2,21 +2,26 @@
 #include <GL/gl.h>
 #include <IL/il.h>
 #include <iostream>
-image::image(GLuint * image){
+image::image(GLuint image){
 	/*take an image from an allready loaded image*/
 	image_data =image;
 }
 image::image(){
 	/* Should probably never be used..*/
-	image_data =NULL;
+	image_data =0;
 }
 
 image::image(char * data,int sizex, int sizey, int format){
 	/*Generates a texture from a string. format should be a GL-one.*/
-	glGenTextures(1,image_data);
+	//glGenTextures(1,image_data);
 }
 image::image(std::string path){
-	image_data = new GLuint;
+	if(!_ILIsInit){
+		ilInit();
+		_ILIsInit = true;
+	}
+
+	name = path;
 	ILuint texid;
 	ilGenImages(1,&texid);
 	ilBindImage(texid);
@@ -30,8 +35,8 @@ image::image(std::string path){
 		return;
 	}
 
-	glGenTextures(1,image_data);
-	glBindTexture(GL_TEXTURE_2D, *image_data);
+	glGenTextures(1,&image_data);
+	glBindTexture(GL_TEXTURE_2D, image_data);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_NEAREST);
@@ -41,15 +46,22 @@ image::image(std::string path){
 	width = ilGetInteger(IL_IMAGE_WIDTH);
 	height = ilGetInteger(IL_IMAGE_HEIGHT);
 	glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_BPP), width, height, 0, ilGetInteger(IL_IMAGE_FORMAT),GL_UNSIGNED_BYTE, ilGetData());
+	ilDeleteImages(1,&texid);
 
 }
-
-void image::draw(){
-	return;
-
+image::~image(){
+	glDeleteTextures(1,&image_data);
 }
-GLuint * image::getTexture(){
+std::string image::getName(){
+	return name;
+}
+
+GLuint image::getTexture(){
 	return image_data;
+}
+
+void image::setTexture(GLuint tex){
+	image_data = tex;
 }
 
 void image::set_loadlevel(enum SYS_STORAGE_LEVEL level){
@@ -76,3 +88,5 @@ void image::set_loadlevel(enum SYS_STORAGE_LEVEL level){
 	}
 
 }
+
+bool image::_ILIsInit;

@@ -5,7 +5,7 @@
 #include <armadillo>
 #define INTEGER_CONVERSION_ERROR -2000000000
 int integer_from_stdstring(std::string value);
-
+namespace utils{
 class Vector3D;
 
 class Vector2D{
@@ -79,3 +79,4 @@ public:
 	float x,y,z;
 	void print();
 };
+}

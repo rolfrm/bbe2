@@ -3,7 +3,9 @@
 #include <iostream>
 #include <list>
 #include "../globals.h"
-#include "../graphics/graphics_core.h"
+using namespace events;
+//#include "../graphics/graphics_core.h"
+/*
 void GLFWCALL keycallback(int key, int action) {
 	if (event_core != NULL) {
 		event_type type;
@@ -58,7 +60,7 @@ void GLFWCALL mouseposcallback(int x, int y) {
 
 	}
 }
-
+*/
 class evented;
 eventCore::eventCore() {
 }
@@ -74,10 +76,6 @@ void eventCore::run() {
 	take_event(turn_event);
 
 	send_events();
-	if(graphics_core != NULL){
-		pointer_game.x =(int) (pointer_screen.x - graphics_core->window_width/2)/2+ graphics_core->cam.Pos.x;
-		pointer_game.y =(int) (pointer_screen.y - graphics_core->window_height/2)/2+ graphics_core->cam.Pos.y;
-	}
 }
 
 void eventCore::add_unit(eventMaster *evt) {
@@ -86,9 +84,9 @@ void eventCore::add_unit(eventMaster *evt) {
 }
 
 void eventCore::take_event(event * evt) {
-	take_event_lock.lock();
+	//take_event_lock.lock();
 	event_queue.push(evt);
-	take_event_lock.unlock();
+	//take_event_lock.unlock();
 }
 void eventCore::send_event(event * evt) {
 

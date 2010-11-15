@@ -6,7 +6,7 @@
  */
 
 #include "events.h"
-
+using namespace events;
 event::event(enum event_recv_type recv_type,string reciever_id,enum event_type type,string transmitter_id){
 	this->recv_type = recv_type;
 	this->reciever_id = hash32(reciever_id);

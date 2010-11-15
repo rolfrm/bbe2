@@ -9,6 +9,9 @@
 #define EVENTS_H_
 
 #include "../hash.h"
+#include <string>
+#include <boost/any.hpp>
+namespace events{
 
 #define KEY_BACKSPACE 295
 #define KEY_F1 258
@@ -56,8 +59,7 @@ enum event_type {
 	TURN,
 	CLICKED
 };
-#include <string>
-#include <boost/any.hpp>
+
 using std::string;
 class evented;
 class event {
@@ -147,5 +149,5 @@ public:
 	}
 	float dt;
 };
-
+}
 #endif /* EVENTS_H_ */

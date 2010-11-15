@@ -9,7 +9,9 @@
 using namespace std;
 
 class Vector2D;
-class sprite;
+
+
+namespace events{
 class evented
 {
 public:
@@ -80,6 +82,6 @@ public:
 	void handle_event(event * evt);
 	void take_event(event * evt);
 };
-
+}
 
 #endif // EVENTED_H

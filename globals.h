@@ -7,17 +7,21 @@
 
 #ifndef GLOBALS_H_
 #define GLOBALS_H_
+namespace graphics{
 class graphicsCore;
+}
 class core;
+namespace events{
 class eventCore;
+}
 class physicsCore;
 class soundCore;
 class resource_bank;
 class xmlCore;
 
-extern graphicsCore * graphics_core;
+extern graphics::graphicsCore * graphics_core;
 extern core * main_core;
-extern eventCore * event_core;
+extern events::eventCore * event_core;
 extern physicsCore * physics_core;
 extern physicsCore *physics_ui;
 extern soundCore * sound_core;

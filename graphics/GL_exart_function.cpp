@@ -9,7 +9,6 @@
 #include <GL/glfw.h>
 #include "GL_extart_functions.h"
 #include <iostream>
-
 PFNGLISRENDERBUFFEREXTPROC glIsRenderbufferEXT = NULL;
 PFNGLBINDRENDERBUFFEREXTPROC glBindRenderbufferEXT = NULL;
 PFNGLDELETERENDERBUFFERSEXTPROC glDeleteRenderbuffersEXT = NULL;
@@ -42,6 +41,7 @@ PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocationARB = NULL;
 PFNGLUNIFORM4FARBPROC glUniform4fARB = NULL;
 PFNGLUNIFORM1IARBPROC glUniform1iARB = NULL;
 PFNGLUNIFORM1FARBPROC glUniform1fARB = NULL;
+PFNGLUNIFORMMATRIX4FVARBPROC glUniformMatrix4fvARB = NULL;
 PFNGLBINDBUFFERARBPROC glBindBufferARB = NULL;
 PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = NULL;
 PFNGLGENBUFFERSARBPROC glGenBuffersARB = NULL;
@@ -50,13 +50,12 @@ PFNGLMAPBUFFERARBPROC glMapBufferARB = NULL;
 PFNGLUNMAPBUFFERARBPROC glUnmapBufferARB = NULL;
 PFNGLVERTEXATTRIBPOINTERARBPROC glVertexAttribPointerARB = NULL;
 PFNGLENABLEVERTEXATTRIBARRAYARBPROC glEnableVertexAttribArrayARB = NULL;
-
+PFNGLBINDATTRIBLOCATIONARBPROC glBindAttribLocationARB = NULL;
+PFNGLGETATTRIBLOCATIONARBPROC glGetAttribLocationARB = NULL;
+PFNGLDISABLEVERTEXATTRIBARRAYARBPROC glDisableVertexAttribArrayARB;
 
 
 int setupGLSL() {
-
-	glVertexAttribPointerARB = (PFNGLVERTEXATTRIBPOINTERARBPROC) glfwGetProcAddress("glVertexAttribPointerARB");
-	glEnableVertexAttribArrayARB = (PFNGLENABLEVERTEXATTRIBARRAYARBPROC) glfwGetProcAddress("glEnableVertexAttribArrayARB");
 
 	glIsRenderbufferEXT = (PFNGLISRENDERBUFFEREXTPROC) glfwGetProcAddress(
 			"glIsRenderbufferEXT");
@@ -164,6 +163,7 @@ int setupGLSL() {
 			"glUniform1iARB");
 	glUniform1fARB = (PFNGLUNIFORM1FARBPROC) glfwGetProcAddress(
 			"glUniform1fARB");
+	glUniformMatrix4fvARB =(PFNGLUNIFORMMATRIX4FVARBPROC) glfwGetProcAddress("glUniformMatrix4fvARB");
 	glGenBuffersARB = (PFNGLGENBUFFERSARBPROC) glfwGetProcAddress(
 			"glGenBuffersARB");
 	glBindBufferARB = (PFNGLBINDBUFFERARBPROC) glfwGetProcAddress(
@@ -172,50 +172,76 @@ int setupGLSL() {
 			"glBufferDataARB");
 	glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC) glfwGetProcAddress(
 			"glDeleteBuffersARB");
-	glMapBufferARB = (PFNGLMAPBUFFERARBPROC) glfwGetProcAddress("glMapBufferARB");
-	glUnmapBufferARB = (PFNGLUNMAPBUFFERARBPROC) glfwGetProcAddress("glUnmapBufferARB");
+	glMapBufferARB = (PFNGLMAPBUFFERARBPROC) glfwGetProcAddress(
+			"glMapBufferARB");
+	glUnmapBufferARB = (PFNGLUNMAPBUFFERARBPROC) glfwGetProcAddress(
+			"glUnmapBufferARB");
+	glVertexAttribPointerARB
+			= (PFNGLVERTEXATTRIBPOINTERARBPROC) glfwGetProcAddress(
+					"glVertexAttribPointerARB");
+	glEnableVertexAttribArrayARB
+			= (PFNGLENABLEVERTEXATTRIBARRAYARBPROC) glfwGetProcAddress(
+					"glEnableVertexAttribArrayARB");
+	glBindAttribLocationARB
+			= (PFNGLBINDATTRIBLOCATIONARBPROC) glfwGetProcAddress(
+					"glBindAttribLocationARB");
+	glGetAttribLocationARB
+			= (PFNGLGETATTRIBLOCATIONARBPROC) glfwGetProcAddress(
+					"glGetAttribLocationARB");
+	glDisableVertexAttribArrayARB
+			= (PFNGLDISABLEVERTEXATTRIBARRAYARBPROC) glfwGetProcAddress(
+					" glDisableVertexAttribArrayARB");
+
 }
 
-bool checkFramebufferStatus()
-{
-    // check FBO status
-    GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
-    switch(status)
-    {
-    case GL_FRAMEBUFFER_COMPLETE_EXT:
-        std::cout << "Framebuffer complete." << std::endl;
-        return true;
+bool checkFramebufferStatus() {
+	// check FBO status
+	GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+	switch (status) {
+	case GL_FRAMEBUFFER_COMPLETE_EXT:
+		std::cout << "Framebuffer complete." << std::endl;
+		return true;
 
-    case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
-        std::cout << "[ERROR] Framebuffer incomplete: Attachment is NOT complete." << std::endl;
-        return false;
+	case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
+		std::cout
+				<< "[ERROR] Framebuffer incomplete: Attachment is NOT complete."
+				<< std::endl;
+		return false;
 
-    case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
-        std::cout << "[ERROR] Framebuffer incomplete: No image is attached to FBO." << std::endl;
-        return false;
+	case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
+		std::cout
+				<< "[ERROR] Framebuffer incomplete: No image is attached to FBO."
+				<< std::endl;
+		return false;
 
-    case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
-        std::cout << "[ERROR] Framebuffer incomplete: Attached images have different dimensions." << std::endl;
-        return false;
+	case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
+		std::cout
+				<< "[ERROR] Framebuffer incomplete: Attached images have different dimensions."
+				<< std::endl;
+		return false;
 
-    case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
-        std::cout << "[ERROR] Framebuffer incomplete: Color attached images have different internal formats." << std::endl;
-        return false;
+	case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
+		std::cout
+				<< "[ERROR] Framebuffer incomplete: Color attached images have different internal formats."
+				<< std::endl;
+		return false;
 
-    case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
-        std::cout << "[ERROR] Framebuffer incomplete: Draw buffer." << std::endl;
-        return false;
+	case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
+		std::cout << "[ERROR] Framebuffer incomplete: Draw buffer."
+				<< std::endl;
+		return false;
 
-    case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
-        std::cout << "[ERROR] Framebuffer incomplete: Read buffer." << std::endl;
-        return false;
+	case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
+		std::cout << "[ERROR] Framebuffer incomplete: Read buffer."
+				<< std::endl;
+		return false;
 
-    case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
-        std::cout << "[ERROR] Unsupported by FBO implementation." << std::endl;
-        return false;
+	case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
+		std::cout << "[ERROR] Unsupported by FBO implementation." << std::endl;
+		return false;
 
-    default:
-        std::cout << "[ERROR] Unknow error." << std::endl;
-        return false;
-    }
+	default:
+		std::cout << "[ERROR] Unknow error." << std::endl;
+		return false;
+	}
 }

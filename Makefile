@@ -1,7 +1,7 @@
 GXX=g++
 CPPFLAGS=-c -I/usr/include/opencv/
 ARGS= -lGLU -lGL  -O3 -lIL -lglfw -larmadillo  -lboost_filesystem -lboost_system -lboost_thread -lxerces-c -lopenal -lalut
-SRC= core.cpp file_handler.cpp hash.cpp main.cpp sprite.cpp toolModule.cpp
+SRC=  main.cpp 
 OBJS = $(SRC:.cpp=.o)
 
 
@@ -9,12 +9,12 @@ OBJS = $(SRC:.cpp=.o)
 	$(GXX) $(CFLAGS) -o $@ 
 
 all: $(OBJS)
-	cd xml;make;cd ..
-	cd events; make; cd ..
-	cd graphics; make; cd ..
-	cd physics; make; cd ..
-	cd sound; make; cd ..
-	$(GXX)  $(ARGS) $^  gxml.a  events.a graphics.a  physics.a sound.a -o run
+	#cd xml;make;cd ..
+	#cd events; make; cd ..
+	#cd graphics; make; cd ..
+	#cd physics; make; cd ..
+	#cd sound; make; cd ..
+	$(GXX)  $(ARGS) $^ graphics.a -o run
 
 
 

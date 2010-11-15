@@ -2,14 +2,11 @@
 #include <iostream>
 #include "../core.h"
 #include "../toolModule.h"
-#include "../graphics/graphics_core.h"
 #include "event_core.h"
 #include "../sound/sound_core.h"
-#include "../physics/phyArchetypes.h"
-#include "../physics/compositePhysobj.h"
-#include "../sprite.h"
 #include "../globals.h"
 #include "../hash.h"
+using namespace events;
 evented::evented(string id) {
 	set_id(id);
 	Parent = NULL;

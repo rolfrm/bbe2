@@ -9,7 +9,9 @@
 #define GL_EXTART_FUNCTIONS_H_
 #include <GL/gl.h>
 #include <GL/glext.h>
+/*Setup EXT and ARB functions defined by the OpenGL standards */
 
+/*Framebuffer functions*/
 extern PFNGLISRENDERBUFFEREXTPROC glIsRenderbufferEXT;
 extern PFNGLBINDRENDERBUFFEREXTPROC glBindRenderbufferEXT;
 extern PFNGLDELETERENDERBUFFERSEXTPROC glDeleteRenderbuffersEXT;
@@ -27,6 +29,8 @@ extern PFNGLFRAMEBUFFERTEXTURE3DEXTPROC glFramebufferTexture3DEXT;
 extern PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC glFramebufferRenderbufferEXT;
 extern PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC glGetFramebufferAttachmentParameterivEXT;
 extern PFNGLGENERATEMIPMAPEXTPROC glGenerateMipmapEXT;
+
+/*Shader functions*/
 extern PFNGLCREATEPROGRAMOBJECTARBPROC glCreateProgramObjectARB;
 extern PFNGLDELETEOBJECTARBPROC glDeleteObjectARB;
 extern PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
@@ -41,6 +45,12 @@ extern PFNGLGETUNIFORMLOCATIONARBPROC glGetUniformLocationARB;
 extern PFNGLUNIFORM4FARBPROC glUniform4fARB;
 extern PFNGLUNIFORM1IARBPROC glUniform1iARB;
 extern PFNGLUNIFORM1FARBPROC glUniform1fARB;
+extern PFNGLUNIFORMMATRIX4FVARBPROC glUniformMatrix4fvARB;
+
+extern PFNGLBINDATTRIBLOCATIONARBPROC glBindAttribLocationARB;
+extern PFNGLGETATTRIBLOCATIONARBPROC glGetAttribLocationARB;
+
+/*Buffer handling*/
 extern PFNGLBINDBUFFERARBPROC glBindBufferARB;
 extern PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB;
 extern PFNGLGENBUFFERSARBPROC glGenBuffersARB;
@@ -49,6 +59,9 @@ extern PFNGLMAPBUFFERARBPROC glMapBufferARB;
 extern PFNGLUNMAPBUFFERARBPROC glUnmapBufferARB;
 extern PFNGLVERTEXATTRIBPOINTERARBPROC glVertexAttribPointerARB;
 extern PFNGLENABLEVERTEXATTRIBARRAYARBPROC glEnableVertexAttribArrayARB;
+extern PFNGLDISABLEVERTEXATTRIBARRAYARBPROC glDisableVertexAttribArrayARB;
+
+/*setupGLSL sets up all EXT/ARB extension functions*/
 int setupGLSL();
 bool checkFramebufferStatus();
 
